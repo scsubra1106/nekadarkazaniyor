@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ne Kadar Kazanıyor? | Türkiye Bağımsız Esnaf & Maaş Rehberi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        html { scroll-behavior: smooth; }
+        /* Özel Kaydırma Çubuğu (Indigo/Violet Uyumlu) */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #070913; }
+        ::-webkit-scrollbar-thumb { background: #1e1b4b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #312e81; }
+    </style>
+</head>
+<body class="bg-[#070913] text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-slate-950">
+
+    <!-- ÜST MENÜ (İNDİGO & VİOLET PREMİUM TEMA) -->
+    <header class="border-b border-slate-800/80 bg-[#070913]/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2.5 cursor-pointer" onclick="window.scrollTo({top:0})">
+                <span class="text-2xl bg-indigo-500/10 p-2 rounded-2xl border border-indigo-500/20 shadow-inner">💸</span>
+                <div>
+                    <h1 class="text-lg font-extrabold tracking-tight text-white">Nekadar<span class="text-indigo-400">Kazaniyor</span>.net</h1>
+                    <span class="text-[10px] text-indigo-400 font-semibold tracking-widest uppercase block">Filtresiz Sokak & Piyasa Rehberi</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2.5">
+                <button onclick="toggleCalculator()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold border border-slate-800 transition flex items-center gap-1.5 shadow-sm">
+                    🧮 Esnaf Hesap Makinesi
+                </button>
+                <button onclick="toggleFeedbackModal()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-indigo-500/20">
+                    📢 Geri Bildirim & Hata Bildir
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ANA İÇERİK -->
+    <main class="max-w-3xl mx-auto px-4 py-10 w-full flex-grow">
+        
+        <!-- BAŞLIK -->
+        <div class="text-center mb-10 space-y-3">
+            <div class="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1.5 rounded-full text-indigo-300 text-xs font-bold">
+                <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
+                <span>50+ Sektör ve Devasa Arşiv (2026)</span>
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">Kim Ne Kadar Kazanıyor?</h2>
+            <p class="text-slate-400 text-sm max-w-lg mx-auto leading-relaxed">Sokaktaki en ücra dükkandan plazadaki uzmana kadar her mesleğin gerçek giderini, cirosunu ve cebine kalanı şak diye hesapla.</p>
+        </div>
+
+        <!-- SEKMELER -->
+        <div class="flex bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 mb-8 max-w-md mx-auto shadow-inner">
+            <button id="tab-trade" onclick="switchTab('trade')" class="flex-1 py-3 rounded-xl font-bold text-sm transition bg-indigo-600 text-white shadow-md">
+                🏬 Ticaret & Esnaf
+            </button>
+            <button id="tab-salary" onclick="switchTab('salary')" class="flex-1 py-3 rounded-xl font-medium text-sm text-slate-400 hover:text-white transition">
+                👔 Maaşlı Çalışan
+            </button>
+        </div>
+
+        <!-- HESAPLAMA KARTI -->
+        <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-2xl relative">
+            
+            <!-- TİCARET SEKTÖRÜ -->
+            <div id="section-trade" class="space-y-6">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-bold uppercase tracking-wider text-slate-400">1. Sektör / İşletme Seçimi</label>
+                        <span class="text-[11px] text-indigo-400 font-medium">Arşiv için aşağı kaydırın 👇</span>
+                    </div>
+                    <select id="trade-select" onchange="autoFillTrade()" class="w-full bg-[#070913] border border-slate-800 rounded-2xl px-4 py-3.5 text-slate-200 font-medium focus:outline-none focus:border-indigo-500 transition shadow-inner">
+                        <!-- JS ile dolacak -->
+                    </select>
+                </div>
+
+                <!-- DİNAMİK GİRDİLER KUTUSU -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#070913]/80 p-5 rounded-2xl border border-slate-800/80">
+                    <div>
+                        <label id="label-input-1" class="block text-[11px] font-bold uppercase text-indigo-400 mb-1.5">İşlem / Müşteri Sayısı</label>
+                        <input type="number" id="t-input-1" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition" placeholder="Örn: 50">
+                    </div>
+                    <div>
+                        <label id="label-input-2" class="block text-[11px] font-bold uppercase text-indigo-400 mb-1.5">Birim Fiyat / Ortalama (TL)</label>
+                        <input type="number" id="t-input-2" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition" placeholder="Örn: 200">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-indigo-400 mb-1.5">Aylık Dükkan Kirası (TL) <span class="text-slate-500 font-normal normal-case block sm:inline">(Dükkan sizinse 0 yazınız)</span></label>
+                        <input type="number" id="t-rent" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition" placeholder="Örn: 25000">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-indigo-400 mb-1.5">Elektrik / Su / Mal Gideri (TL)</label>
+                        <input type="number" id="t-util" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition" placeholder="Örn: 15000">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">2. Lokasyon Çarpanı</label>
+                        <select id="trade-location" class="w-full bg-[#070913] border border-slate-800 rounded-2xl px-4 py-3.5 text-slate-200 font-medium focus:outline-none focus:border-indigo-500">
+                            <option value="1.5">Ana Cadde / Çarşı / AVM (x1.5 Yoğunluk)</option>
+                            <option value="1.0" selected>Mahalle Arası / Standart (x1.0 Normal)</option>
+                            <option value="0.5">Dağ Başı / Sapa / Düşük Trafik (x0.5)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-xs font-bold uppercase tracking-wider text-slate-400">3. Veresiye / Batık Oranı</label>
+                            <span id="veresiye-val" class="text-xs font-bold text-indigo-400">%10</span>
+                        </div>
+                        <input type="range" id="trade-veresiye" min="0" max="30" value="10" step="1" oninput="document.getElementById('veresiye-val').innerText = '%' + this.value" class="w-full accent-indigo-500 bg-[#070913] h-3 rounded-lg cursor-pointer mt-3">
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAAŞLI ÇALIŞAN -->
+            <div id="section-salary" class="space-y-6 hidden">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">1. Pozisyon / Meslek Seçimi</label>
+                    <select id="salary-select" onchange="autoFillSalary()" class="w-full bg-[#070913] border border-slate-800 rounded-2xl px-4 py-3.5 text-slate-200 font-medium focus:outline-none focus:border-indigo-500">
+                        <!-- JS ile dolacak -->
+                    </select>
+                </div>
+
+                <div class="bg-[#070913]/80 p-5 rounded-2xl border border-slate-800">
+                    <label class="block text-[11px] font-bold uppercase text-indigo-400 mb-1.5">Aylık Net Maaş (TL)</label>
+                    <input type="number" id="s-net" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-indigo-500" placeholder="Örn: 45000">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">2. Kıdem / Tecrübe Seviyesi</label>
+                    <select id="salary-level" class="w-full bg-[#070913] border border-slate-800 rounded-2xl px-4 py-3.5 text-slate-200 font-medium focus:outline-none focus:border-indigo-500">
+                        <option value="0.8">Junior / Başlangıç (0-2 Yıl)</option>
+                        <option value="1.0" selected>Mid / Uzman (3-6 Yıl)</option>
+                        <option value="1.4">Senior / Kıdemli / Yönetici (7+ Yıl)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- HESAPLA BUTONU -->
+            <button onclick="calculateResult()" class="w-full mt-8 bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-500 hover:from-indigo-500 hover:to-violet-400 text-white font-black py-4 rounded-2xl shadow-xl shadow-indigo-500/20 transition transform active:scale-[0.99] text-base tracking-wide flex items-center justify-center gap-2">
+                <span>Net Kazancı ve Piyasayı Çat Diye Hesapla</span>
+                <span>⚡</span>
+            </button>
+        </div>
+
+        <!-- SONUÇ EKRANI -->
+        <div id="result-box" class="hidden mt-6 bg-slate-900/90 border border-indigo-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden animate-fade-in">
+            <div class="absolute top-0 right-0 transform translate-x-6 -translate-y-6 w-36 h-36 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-800 pb-4">
+                <div>
+                    <span id="res-badge" class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Analiz Sonucu</span>
+                    <h3 id="res-title" class="text-xl font-extrabold text-white mt-2">Sektör</h3>
+                </div>
+                <div class="text-left sm:text-right">
+                    <span class="text-xs text-slate-400 block font-medium">Aylık Net Kalan (Cepte Kalan)</span>
+                    <span id="res-net" class="text-3xl sm:text-4xl font-black text-indigo-400">0 ₺</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <div class="bg-[#070913] p-4 rounded-2xl border border-slate-800/80">
+                    <span class="text-xs text-slate-400 block mb-1">Aylık Brüt Ciro</span>
+                    <span id="res-gross" class="text-lg font-bold text-white">0 ₺</span>
+                </div>
+                <div class="bg-[#070913] p-4 rounded-2xl border border-slate-800/80">
+                    <span class="text-xs text-slate-400 block mb-1">Toplam Giderler</span>
+                    <span id="res-cost" class="text-lg font-bold text-rose-400">0 ₺</span>
+                </div>
+                <div class="bg-[#070913] p-4 rounded-2xl border border-slate-800/80">
+                    <span class="text-xs text-slate-400 block mb-1">Saha Tüyosu</span>
+                    <span id="res-tip" class="text-xs font-bold text-slate-300 leading-snug">-</span>
+                </div>
+            </div>
+
+            <div class="bg-[#070913]/80 rounded-2xl p-4 border border-slate-800 space-y-2">
+                <div class="flex items-center gap-2 text-xs font-bold text-amber-400">
+                    <span>🚨 Başabaş & Sınır:</span>
+                    <span id="res-break-even" class="text-slate-200">Zararı kapatma sınırı.</span>
+                </div>
+                <p id="res-comment" class="text-xs sm:text-sm text-slate-300 italic pt-2 border-t border-slate-800/50">
+                    "Sokak yorumu..."
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-900/80 py-6 text-center text-xs text-slate-500">
+        <p>NekadarKazaniyor.net © 2026 — Bağımsız Piyasa & Esnaf Rehberi. Tüm hakları saklıdır.</p>
+    </footer>
+
+    <!-- HESAP MAKİNESİ MODAL -->
+    <div id="calc-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl relative">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white">🧮 Esnaf Hesap Makinesi</h3>
+                <button onclick="toggleCalculator()" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
+            </div>
+            <div class="space-y-4">
+                <input type="number" id="calc-amount" placeholder="Tutar girin (Örn: 1000)" class="w-full bg-[#070913] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="runCalc('kdv_ekle')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-2.5 rounded-xl text-xs font-bold">%20 KDV Ekle</button>
+                    <button onclick="runCalc('kdv_sil')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-2.5 rounded-xl text-xs font-bold">%20 KDV Çıkart</button>
+                    <button onclick="runCalc('pos_kes')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-2.5 rounded-xl text-xs font-bold">%3 POS Komisyon Kes</button>
+                    <button onclick="runCalc('kar_ekle')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-2.5 rounded-xl text-xs font-bold">%50 Kâr Marjı Koy</button>
+                </div>
+                <div class="bg-[#070913] p-4 rounded-xl border border-slate-800 text-center">
+                    <span id="calc-result" class="text-2xl font-black text-indigo-400">0,00 ₺</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERBEST GERİ BİLDİRİM, HATA & GELİŞTİRME MODALI (scsubra11.06@gmail.com) -->
+    <div id="feedback-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl relative">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">📢 Geri Bildirim, Hata & Öneri</h3>
+                <button onclick="toggleFeedbackModal()" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
+            </div>
+            <p class="text-xs text-slate-400 mb-4">Sitedeki bir hatayı bildirmek, yeni özellik önermek veya piyasa saha verisi paylaşmak için serbestçe yazabilirsin. Doğrudan <strong class="text-indigo-400">scsubra11.06@gmail.com</strong> adresine iletilir.</p>
+            
+            <form action="https://formspree.io/f/scsubra11.06@gmail.com" method="POST" onsubmit="handleFormSubmit(event)" class="space-y-3">
+                <input type="hidden" name="_subject" value="[NekadarKazaniyor Geri Bildirim / Hata / Veri]">
+                <div>
+                    <label class="block text-[11px] font-bold uppercase text-slate-400 mb-1">Konu / Kategori</label>
+                    <select name="kategori" class="w-full bg-[#070913] border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        <option value="Saha Verisi">Saha Verisi / Kazanç Düzeltmesi</option>
+                        <option value="Hata Bildirimi">Hata / Bug Bildirimi</option>
+                        <option value="Geliştirme Önerisi">Yeni Özellik / Geliştirme Önerisi</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold uppercase text-slate-400 mb-1">Adınız veya Sektörünüz</label>
+                    <input type="text" name="gonderen" required placeholder="Örn: Kadıköy PS Kafe Sahibi" class="w-full bg-[#070913] border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold uppercase text-slate-400 mb-1">Mesajınız / Detaylar</label>
+                    <textarea name="mesaj" required rows="4" placeholder="Hatayı veya önerini buraya detaylıca yaz..." class="w-full bg-[#070913] border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl text-sm shadow-lg shadow-indigo-500/20">
+                    Bildirimi Gönder 🚀
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT: DEVASA 50+ MESLEK ARŞİVİ VE ÖZEL DİNAMİK ETİKETLER -->
+    <script>
+        const tradeDatabase = [
+            { 
+                id: "muteahhit", name: "🏗️ Müteahhit / İnşaat Yap-Sat", 
+                lbl1: "Yıllık Satılan Daire Sayısı", lbl2: "Ortalama Daire Satış Fiyatı (TL)",
+                val1: 4, val2: 3000000, rent: 50000, util: 20000, isAnnual: true,
+                tip: "Yüksek Risk / Yüksek Kâr", breakEven: "Yılda en az 2 daire satışı.", comment: "Maketten satış nakit akıtır, malzeme artışı projeyi zorlar." 
+            },
+            { 
+                id: "galeri", name: "🚗 Oto Galeri / Araç Alım-Satım", 
+                lbl1: "Aylık Alınıp Satılan Araç", lbl2: "Araç Başı Ortalama Kâr/Komisyon",
+                val1: 4, val2: 50000, rent: 45000, util: 8000, isAnnual: false,
+                tip: "Hızlı Sermaye Sirkülasyonu", breakEven: "Ayda en az 3 araç devri.", comment: "Piyasa durgunken nakitte kalan kazanır, stok bekleten maliyet öder." 
+            },
+            { 
+                id: "ps_pc_kafe", name: "🎮 PS Kafe / PC Kafe (Esports Lounge)", 
+                lbl1: "Günlük Aktif Masa/Konsol Saati", lbl2: "Saatlik Ortalama Ücret (TL)",
+                val1: 120, val2: 70, rent: 40000, util: 18000, isAnnual: false,
+                tip: "Donanım Yatırımı & Gece Tarifesi", breakEven: "Günde en az 70 saat doluluk.", comment: "Yüksek sistem maliyeti vardır ancak genç nesil ve turnuvalarla para basar." 
+            },
+            { 
+                id: "rent_a_car", name: "🚗 Oto Kiralama (Rent a Car Filo)", 
+                lbl1: "Filodaki Toplam Araç Sayısı", lbl2: "Araç Başı Aylık Ortalama Kira (TL)",
+                val1: 10, val2: 22000, rent: 30000, util: 10000, isAnnual: false,
+                tip: "Kasko, Bakım ve Sezonluk Talep", breakEven: "Filo doluluk oranı min %60.", comment: "Yaz sezonunda ve bayramlarda fiyatlar tavan yapar, kasko ve hasar en büyük giderdir." 
+            },
+            { 
+                id: "spor_salonu", name: "🏋️‍♂️ Spor Salonu / Fitness Center", 
+                lbl1: "Aktif Üye Sayısı", lbl2: "Üye Başı Ortalama Aylık Aidat (TL)",
+                val1: 250, val2: 850, rent: 75000, util: 25000, isAnnual: false,
+                tip: "Yüksek Sabit Gider / Sürüm", breakEven: "En az 150 aktif üyeye ihtiyaç var.", comment: "Ocak-Mart dönemi kayıt patlaması yaşanır, yazın salonlar boşalır." 
+            },
+            { 
+                id: "nakliyeci", name: "🚚 Nakliyeci / Şehirlerarası Kamyoncu", 
+                lbl1: "Aylık Yapılan Sefer Sayısı", lbl2: "Sefer Başı Ortalama Navlun (TL)",
+                val1: 8, val2: 35000, rent: 15000, util: 45000, isAnnual: false,
+                tip: "Mazot, Lastik ve Yol Gideri", breakEven: "Ayda en az 5 uzun yol seferi.", comment: "Mazot zamları doğrudan navluna yansıtılır, boş dönüşler kârı eritir." 
+            },
+            { 
+                id: "ozel_klinik", name: "🏥 Özel Klinik / Muayenehane Sahibi", 
+                lbl1: "Günlük Hasta / Danışan Sayısı", lbl2: "Muayene / İşlem Ortalama Ücreti",
+                val1: 12, val2: 1500, rent: 45000, util: 15000, isAnnual: false,
+                tip: "Yüksek Bilgi Birikimi & Prestij", breakEven: "Günde en az 7 hasta.", comment: "Sekreterya ve tıbbi sarf malzemesi gideri vardır ama net kazancı çok yüksektir." 
+            },
+            { 
+                id: "veteriner", name: "🐾 Veteriner Hekim Kliniği", 
+                lbl1: "Günlük Hasta / Aşı / Operasyon Sayısı", lbl2: "İşlem Başı Ortalama Tutar (TL)",
+                val1: 15, val2: 800, rent: 25000, util: 9000, isAnnual: false,
+                tip: "Mama Satışı + Cerrahi Operasyon", breakEven: "Günde en az 9 işlem.", comment: "Cerrahi operasyonlar ve kaliteli mama satışları kliniği ayakta tutar." 
+            },
+            { 
+                id: "3ncü_nesil_kahveci", name: "☕ Üçüncü Nesil Kahveci / Barista", 
+                lbl1: "Günlük Satılan Kahve / Fiş Adedi", lbl2: "Ortalama Fincan / Ürün Fiyatı (TL)",
+                val1: 90, val2: 120, rent: 40000, util: 14000, isAnnual: false,
+                tip: "Çekirdek Kalitesi & Genç Müşteri", breakEven: "Günde en az 60 bardak.", comment: "Kahve çekirdeği maliyeti düşüktür ancak merkezi lokasyon kiraları yüksektir." 
+            },
+            { 
+                id: "dugun_fotografcisi", name: "📸 Düğün & Prodüksiyon Fotoğrafçısı", 
+                lbl1: "Aylık Çekilen Düğün / Klip Sayısı", lbl2: "Paket Başı Ortalama Ücret (TL)",
+                val1: 6, val2: 18000, rent: 15000, util: 5000, isAnnual: false,
+                tip: "Sezonluk Patlama (Yaz Dönemi)", breakEven: "Ayda en az 3 çekim.", comment: "Ekipman maliyeti yüksektir; yaz sezonunda kazanılan para tüm yılı finanse eder." 
+            },
+            { 
+                id: "fast_food_bufeci", name: "🍔 Fast Food / Kokoreç Büfe", 
+                lbl1: "Günlük Satılan Porsiyon / Dürüm", lbl2: "Ortalama Ürün Fiyatı (TL)",
+                val1: 110, val2: 150, rent: 25000, util: 12000, isAnnual: false,
+                tip: "Gece Müşterisi & Paket Servis", breakEven: "Günde en az 70 porsiyon.", comment: "Özellikle gece saatlerinde sokak lezzeti arayanlarla ciddi ciro döner." 
+            },
+            { 
+                id: "mobilya_atolyesi", name: "🪵 Mobilya İmalat & Marangoz", 
+                lbl1: "Aylık Tamamlanan Mutfak/Oda Projesi", lbl2: "Proje Başı Ortalama Tutar (
